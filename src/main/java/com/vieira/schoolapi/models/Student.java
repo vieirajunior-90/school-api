@@ -13,7 +13,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class Student implements Serializable {
 
@@ -39,6 +38,7 @@ public class Student implements Serializable {
             message = "Phone is invalid. The format must be (99)99999-9999")
     private String phone;
 
+    @NonNull
     @NotBlank(message = "Password is required and must be at least 8 characters")
     @Size(min = 8, max = 20)
     @Column(nullable = false, length = 20)
@@ -50,6 +50,14 @@ public class Student implements Serializable {
 //    private Address address;
 //
 //    private List<Discipline> disciplines;
+
+    @Builder
+    public Student(@NonNull String name, @NonNull String email, @NonNull String phone, @NonNull String password) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+    }
 
 
     @Override
