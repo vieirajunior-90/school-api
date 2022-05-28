@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -41,5 +42,10 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<StudentDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(studentService.findById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<StudentDto>> findAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.findAll());
     }
 }

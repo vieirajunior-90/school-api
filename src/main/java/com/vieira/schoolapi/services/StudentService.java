@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,5 +40,14 @@ public class StudentService {
         catch (ConstraintViolationException e) {
             throw new ConstraintException(e.getMessage());
         }
+    }
+
+    public List<StudentDto> findAll() {
+        List<Student> students = studentRepository.findAll();
+        List<StudentDto> studentDtos = new ArrayList<>();
+        for (Student student : students) {
+            studentDtos.add(StudentDto.convert(student));
+        }
+        return studentDtos;
     }
 }
