@@ -15,9 +15,7 @@ public record AddressDto(
         @NotBlank(message = "The street is required")
         String street,
 
-        @NotBlank(message = "The number is required")
-//        @Pattern(regexp = "^[/d]{1,5}$", message = "The number must be between 1 and 5 digits")
-        String number,
+        @NotBlank(message = "The number is required") String number,
 
         String complement,
         String district,
@@ -32,7 +30,7 @@ public record AddressDto(
         String country,
 
         @NotBlank(message = "The zip code is required")
-//        @Pattern(regexp = "^[/d]{5}-[/d]{3}$", message = "Invalid zip code")
+        @Pattern(regexp = "^\\d{5}-\\d{4}$", message = "Invalid zip code")
         String zipCode,
 
         List<StudentDto> students

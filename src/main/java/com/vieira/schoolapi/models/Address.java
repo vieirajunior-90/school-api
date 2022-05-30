@@ -53,7 +53,7 @@ public class Address implements Serializable {
     private String country;
 
     @NonNull
-    @Column(name = "zip_code", nullable = false, length = 9)
+    @Column(name = "zip_code", nullable = false, length = 10)
     private String zipCode;
 
     @OneToMany(

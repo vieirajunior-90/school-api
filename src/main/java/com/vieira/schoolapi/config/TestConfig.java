@@ -74,7 +74,7 @@ public class TestConfig implements CommandLineRunner {
                 .city("London")
                 .state("EN")
                 .country("United Kingdom")
-                .zipCode("12345-678")
+                .zipCode("12345-6789")
                 .build();
 
         addressRepository.save(A1);
