@@ -51,6 +51,7 @@ public class StudentService {
         return studentDtos;
     }
 
+    @Transactional
     public Student update(Long id, Student student) {
         Optional<Student> studentToUpdate = studentRepository.findById(id);
         if(!studentToUpdate.isPresent()){
@@ -58,5 +59,14 @@ public class StudentService {
         }
         student.setId(id);
         return studentRepository.save(student);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Optional<Student> student = studentRepository.findById(id);
+        if(!student.isPresent()){
+            throw new ResourceNotFoundException(id);
+        }
+        studentRepository.deleteById(id);
     }
 }

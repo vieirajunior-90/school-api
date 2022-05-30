@@ -32,6 +32,20 @@ public class TestConfig implements CommandLineRunner {
                 .password("!@4321Abcd")
                 .build();
 
-        studentRepository.saveAll(Arrays.asList(S1, S2));
+        Student S3 = Student.builder()
+                .name("Ron Weasley")
+                .email("ronweasley@outlook.com")
+                .phone("(99)66666-8888")
+                .password("!@8888Abcd")
+                .build();
+
+        Student S4 = Student.builder()
+                .name("Albus Dumbledore")
+                .email("dumbledore@gmail.com")
+                .phone("(22)44444-8888")
+                .password("!@4321Zxcv")
+                .build();
+
+        studentRepository.saveAll(Arrays.asList(S1, S2, S3, S4));
     }
 }

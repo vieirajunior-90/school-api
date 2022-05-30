@@ -62,4 +62,11 @@ public class StudentController {
         Student studentToUpdate = studentService.update(id, student);
         return ResponseEntity.status(HttpStatus.OK).body(StudentDto.convert(studentToUpdate));
     }
+
+    @DeleteMapping("student/{id}")
+    @ApiOperation("Delete a student")
+    public ResponseEntity<StudentDto> delete(@PathVariable Long id) {
+        studentService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
 }
