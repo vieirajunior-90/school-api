@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @Profile("test")
@@ -58,28 +59,39 @@ public class TestConfig implements CommandLineRunner {
 
         studentRepository.saveAll(Arrays.asList(S1, S2, S3, S4));
 
-        Address A1 = addAddress();
+        List<Address> addresses = addAddress();
 
-        S1.setAddress(A1);
-        S2.setAddress(A1);
+        S1.setAddress(addresses.get(0));
+        S2.setAddress(addresses.get(1));
         studentRepository.saveAll(Arrays.asList(S1, S2));
     }
 
-    public Address addAddress(){
+    public List<Address> addAddress(){
         Address A1 = Address.builder()
-                .street("Elf Street")
-                .number("123")
-                .complement("Room 2A")
-                .district("Side Blue")
+                .street("Privet Drive")
+                .number("4")
+                .complement("The cupboard under the stairs")
+                .district("Little Whinging")
                 .city("London")
                 .state("EN")
                 .country("United Kingdom")
                 .zipCode("12345-6789")
                 .build();
 
-        addressRepository.save(A1);
+        Address A2 = Address.builder()
+                .street("Heathgate")
+                .number("8")
+                .complement(null)
+                .district("Hampstead Garden Suburb")
+                .city("London")
+                .state("EN")
+                .country("United Kingdom")
+                .zipCode("90890-0987")
+                .build();
 
-        return A1;
+        addressRepository.saveAll(Arrays.asList(A1, A2));
+
+        return Arrays.asList(A1, A2);
     }
 
 }
