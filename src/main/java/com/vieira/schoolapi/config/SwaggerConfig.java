@@ -22,8 +22,8 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.vieira.schoolapi"))
-                .paths(regex("/api/.*"))
+                .apis(RequestHandlerSelectors.basePackage("com.vieira.schoolapi.controllers"))
+                .paths(regex("/.*"))
                 .build()
                 .apiInfo(metaInfo());
     }

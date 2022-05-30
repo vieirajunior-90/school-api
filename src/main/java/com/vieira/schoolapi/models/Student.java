@@ -1,5 +1,6 @@
 package com.vieira.schoolapi.models;
 
+import com.vieira.schoolapi.dtos.AddressDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -47,7 +48,9 @@ public class Student implements Serializable {
                       "one special character and no whitespace")
     private String password;
 
-//    private Address address;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 //
 //    private List<Discipline> disciplines;
 

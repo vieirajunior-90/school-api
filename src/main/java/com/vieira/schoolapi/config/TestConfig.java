@@ -1,6 +1,9 @@
 package com.vieira.schoolapi.config;
 
+import com.vieira.schoolapi.dtos.AddressDto;
+import com.vieira.schoolapi.models.Address;
 import com.vieira.schoolapi.models.Student;
+import com.vieira.schoolapi.repositories.AddressRepository;
 import com.vieira.schoolapi.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,8 +19,15 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
     @Override
     public void run(String... args){
+        addStudents();
+    }
+
+    public void addStudents(){
         Student S1 = Student.builder()
                 .name("Harry Potter")
                 .email("harrypotter@outlook.com")
@@ -47,5 +57,29 @@ public class TestConfig implements CommandLineRunner {
                 .build();
 
         studentRepository.saveAll(Arrays.asList(S1, S2, S3, S4));
+
+        Address A1 = addAddress();
+
+        S1.setAddress(A1);
+        S2.setAddress(A1);
+        studentRepository.saveAll(Arrays.asList(S1, S2));
     }
+
+    public Address addAddress(){
+        Address A1 = Address.builder()
+                .street("Elf Street")
+                .number("123")
+                .complement("Room 2A")
+                .district("Side Blue")
+                .city("London")
+                .state("EN")
+                .country("United Kingdom")
+                .zipCode("12345-678")
+                .build();
+
+        addressRepository.save(A1);
+
+        return A1;
+    }
+
 }

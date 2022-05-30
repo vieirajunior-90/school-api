@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 @Api("Student Controller")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class StudentController {
@@ -30,6 +30,7 @@ public class StudentController {
     public ResponseEntity<Object> save(@RequestBody Student student) {
         try {
             @Valid StudentDto studentDto = new StudentDto(
+                    student.getId(),
                     student.getName(),
                     student.getEmail(),
                     student.getPhone()

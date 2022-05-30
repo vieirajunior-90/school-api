@@ -1,5 +1,6 @@
 package com.vieira.schoolapi.dtos;
 
+import com.vieira.schoolapi.models.Address;
 import com.vieira.schoolapi.models.Student;
 
 import javax.validation.constraints.Email;
@@ -7,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public record StudentDto(
+        Long id,
         @NotBlank(message = "Name is required")
         @Size(min = 1)
         String name,
@@ -17,6 +19,6 @@ public record StudentDto(
         String phone){
 
     public static StudentDto convert(Student student) {
-        return new StudentDto(student.getName(), student.getEmail(), student.getPhone());
+        return new StudentDto(student.getId(), student.getName(), student.getEmail(), student.getPhone());
     }
 }
