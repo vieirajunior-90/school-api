@@ -4,7 +4,9 @@ import com.vieira.schoolapi.dtos.AddressDto;
 import com.vieira.schoolapi.models.Address;
 import com.vieira.schoolapi.repositories.AddressRepository;
 import com.vieira.schoolapi.services.exceptions.ConstraintException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -38,5 +40,15 @@ public class AddressService {
             addressDtos.add(AddressDto.convert(address));
         }
         return addressDtos;
+    }
+
+    @Transactional
+    public Address update(Long id, AddressDto addressDto) {
+        Optional<Address> addressToUpdate = addressRepository.findById(id);
+        if(!addressToUpdate.isPresent()) {
+            throw new ConstraintException("Address not found");
+        }
+        BeanUtils.copyProperties(addressDto, addressToUpdate.get());
+        return addressRepository.save(addressToUpdate.get());
     }
 }

@@ -48,12 +48,12 @@ public class AddressController {
     }
 
 
-//    @PutMapping("address/{id}")
-//    @ApiOperation("Update a address")
-//    public ResponseEntity<AddressDto> update(@PathVariable Long id, @RequestBody Address address) {
-//        Address addressToUpdate = addressService.update(id, address);
-//        return ResponseEntity.status(HttpStatus.OK).body(AddressDto.convert(addressToUpdate));
-//    }
+    @PutMapping("address/{id}")
+    @ApiOperation("Update a address")
+    public ResponseEntity<AddressDto> update(@PathVariable Long id, @RequestBody AddressDto addressDto) {
+        Address addressToUpdate = addressService.update(id, addressDto);
+        return ResponseEntity.status(HttpStatus.OK).body(AddressDto.convert(addressToUpdate));
+    }
 //
 //    @DeleteMapping("address/{id}")
 //    @ApiOperation("Delete a address")
