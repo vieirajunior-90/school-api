@@ -50,4 +50,13 @@ public class StudentService {
         }
         return studentDtos;
     }
+
+    public Student update(Long id, Student student) {
+        Optional<Student> studentToUpdate = studentRepository.findById(id);
+        if(!studentToUpdate.isPresent()){
+            throw new ResourceNotFoundException(id);
+        }
+        student.setId(id);
+        return studentRepository.save(student);
+    }
 }

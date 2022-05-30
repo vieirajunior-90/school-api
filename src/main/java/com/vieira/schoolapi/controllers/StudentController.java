@@ -48,4 +48,10 @@ public class StudentController {
     public ResponseEntity<List<StudentDto>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(studentService.findAll());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<StudentDto> update(@PathVariable Long id, @RequestBody Student student) {
+        Student studentToUpdate = studentService.update(id, student);
+        return ResponseEntity.status(HttpStatus.OK).body(StudentDto.convert(studentToUpdate));
+    }
 }
