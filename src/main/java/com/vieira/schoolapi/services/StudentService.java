@@ -67,10 +67,10 @@ public class StudentService {
     @Transactional
     public Student update(Long id, Student student) {
         Optional<Student> studentToUpdate = studentRepository.findById(id);
-        if(!studentToUpdate.isPresent()){
+        if(studentToUpdate.isEmpty()){
             throw new ResourceNotFoundException(id);
         }
-        student.setId(id);
+        student.setAddress(studentToUpdate.get().getAddress());
         return studentRepository.save(student);
     }
 

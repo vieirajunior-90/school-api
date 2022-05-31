@@ -2,6 +2,7 @@ package com.vieira.schoolapi.services;
 
 import com.vieira.schoolapi.dtos.CourseDto;
 import com.vieira.schoolapi.models.Course;
+import com.vieira.schoolapi.models.Student;
 import com.vieira.schoolapi.repositories.CourseRepository;
 import com.vieira.schoolapi.services.exceptions.ConstraintException;
 import com.vieira.schoolapi.services.exceptions.ResourceNotFoundException;
@@ -20,20 +21,37 @@ public class CourseService {
     private CourseRepository courseRepository;
 
     @Transactional
-    public Course save(Course discipline) {
-        if (courseRepository.existsByName(discipline.getName())) {
-            throw new ConstraintException("Discipline already exists");
+    public Course save(Course course) {
+        if (courseRepository.existsByName(course.getName())) {
+            throw new ConstraintException("Course already exists");
         }
-        return courseRepository.save(discipline);
+        return courseRepository.save(course);
     }
 
     public CourseDto findById(Long id) {
-        Optional<Course> discipline = courseRepository.findById(id);
-        return CourseDto.convert(discipline.orElseThrow((() -> new ResourceNotFoundException(id))));
+        Optional<Course> course = courseRepository.findById(id);
+        return CourseDto.convert(course.orElseThrow((() -> new ResourceNotFoundException(id))));
     }
 
     public List<CourseDto> findAll() {
-        List<Course> disciplines = courseRepository.findAll();
-        return disciplines.stream().map(CourseDto::convert).collect(Collectors.toList());
+        List<Course> courses = courseRepository.findAll();
+        return courses.stream().map(CourseDto::convert).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Course update(Long id, Course course) {
+        Optional<Course> courseToUpdate = courseRepository.findById(id);
+        if(courseToUpdate.isEmpty()){
+            throw new ResourceNotFoundException(id);
+        }
+        course.setName(courseToUpdate.get().getName());
+        course.setDescription(courseToUpdate.get().getDescription());
+        course.setStudents(courseToUpdate.get().getStudents());
+        return courseRepository.save(course);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        courseRepository.deleteById(id);
     }
 }

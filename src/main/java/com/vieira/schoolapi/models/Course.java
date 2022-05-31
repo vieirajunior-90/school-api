@@ -1,6 +1,8 @@
 package com.vieira.schoolapi.models;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -33,6 +35,7 @@ public class Course implements Serializable {
     private String description;
 
     @ManyToMany(mappedBy = "courses")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Setter(AccessLevel.NONE)
     @ToString.Exclude
     private List<Student> students = new ArrayList<>();
