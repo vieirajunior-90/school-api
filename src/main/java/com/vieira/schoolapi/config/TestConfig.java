@@ -2,8 +2,10 @@ package com.vieira.schoolapi.config;
 
 import com.vieira.schoolapi.dtos.AddressDto;
 import com.vieira.schoolapi.models.Address;
+import com.vieira.schoolapi.models.Discipline;
 import com.vieira.schoolapi.models.Student;
 import com.vieira.schoolapi.repositories.AddressRepository;
+import com.vieira.schoolapi.repositories.DisciplineRepository;
 import com.vieira.schoolapi.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,9 +25,31 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private AddressRepository addressRepository;
 
+    @Autowired
+    private DisciplineRepository disciplineRepository;
+
     @Override
     public void run(String... args){
         addStudents();
+
+        Discipline D1 = Discipline.builder()
+                .name("Math")
+                .description("Math is the study of the properties of numbers and the relationships between them.")
+                .build();
+
+        Discipline D2 = Discipline.builder()
+                .name("Physics")
+                .description("Physics is the natural science that involves the study of matter and its " +
+                        "motion through space and time.")
+                .build();
+
+        Discipline D3 = Discipline.builder()
+                .name("Chemistry")
+                .description("Chemistry is the natural science that involves the study of matter and its " +
+                        "changes in chemical reactions.")
+                .build();
+
+        disciplineRepository.saveAll(Arrays.asList(D1, D2, D3));
     }
 
     public void addStudents(){
