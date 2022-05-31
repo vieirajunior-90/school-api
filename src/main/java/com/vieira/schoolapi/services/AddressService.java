@@ -7,6 +7,8 @@ import com.vieira.schoolapi.services.exceptions.ConstraintException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -34,11 +36,9 @@ public class AddressService {
         return AddressDto.convert(address.orElseThrow((() -> new ConstraintException("Address not found"))));
     }
 
-    public List<AddressDto> findAll() {
-        List<AddressDto> addressDtos = new ArrayList<>();
-        for(Address address : addressRepository.findAll()) {
-            addressDtos.add(AddressDto.convert(address));
-        }
+    public Page<AddressDto> findAll(Pageable pageable) {
+        Page<Address> addresses = addressRepository.findAll(pageable);
+        Page<AddressDto> addressDtos = addresses.map(AddressDto::convert);
         return addressDtos;
     }
 
@@ -50,5 +50,13 @@ public class AddressService {
         }
         BeanUtils.copyProperties(addressDto, addressToUpdate.get());
         return addressRepository.save(addressToUpdate.get());
+    }
+    @Transactional
+    public void delete(Long id) {
+        Optional<Address> addressToDelete = addressRepository.findById(id);
+        if(!addressToDelete.isPresent()) {
+            throw new ConstraintException("Address not found");
+        }
+        addressRepository.delete(addressToDelete.get());
     }
 }

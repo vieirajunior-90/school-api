@@ -6,8 +6,9 @@ import com.vieira.schoolapi.repositories.StudentRepository;
 import com.vieira.schoolapi.services.exceptions.ConstraintException;
 import com.vieira.schoolapi.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
@@ -26,6 +27,27 @@ public class StudentService {
         return StudentDto.convert(student.orElseThrow((() -> new ResourceNotFoundException(id))));
     }
 
+    public List<StudentDto> findByName(String name) {
+        List<Student> students = studentRepository.findAll();
+        List<StudentDto> studentDtos = new ArrayList<>();
+        for (Student student : students) {
+            String[] names = student.getName().toLowerCase().split(" ");
+            if (names[0].equals(name.toLowerCase()) || names[1].equals(name.toLowerCase())) {
+                studentDtos.add(StudentDto.convert(student));
+            }
+        }
+        return studentDtos;
+    }
+
+    public Page<Student> findAll(Pageable pageable) {
+        List<Student> students = studentRepository.findAll();
+        List<StudentDto> studentDtos = new ArrayList<>();
+        for (Student student : students) {
+            studentDtos.add(StudentDto.convert(student));
+        }
+        return studentRepository.findAll(pageable);
+    }
+
     @Transactional
     public Student save(Student student) {
         try{
@@ -40,15 +62,6 @@ public class StudentService {
         catch (ConstraintViolationException e) {
             throw new ConstraintException(e.getMessage());
         }
-    }
-
-    public List<StudentDto> findAll() {
-        List<Student> students = studentRepository.findAll();
-        List<StudentDto> studentDtos = new ArrayList<>();
-        for (Student student : students) {
-            studentDtos.add(StudentDto.convert(student));
-        }
-        return studentDtos;
     }
 
     @Transactional

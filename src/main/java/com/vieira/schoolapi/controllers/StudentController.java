@@ -7,6 +7,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,12 +55,20 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.OK).body(studentService.findById(id));
     }
 
-    @GetMapping("/students")
-    @ApiOperation("Find all students")
-    public ResponseEntity<List<StudentDto>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(studentService.findAll());
+    @GetMapping("/student")
+    @ApiOperation("Find a student by name")
+    public ResponseEntity<List<StudentDto>> findByName(@RequestParam(value="name") String name) {
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.findByName(name));
     }
 
+    @GetMapping("/students")
+    @ApiOperation("Find all students")
+    public ResponseEntity<Page<StudentDto>> findAll(
+            @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<Student> students = studentService.findAll(pageable);
+        Page<StudentDto> studentDtos = students.map(StudentDto::convert);
+        return ResponseEntity.status(HttpStatus.OK).body(studentDtos);
+    }
     @PutMapping("student/{id}")
     @ApiOperation("Update a student")
     public ResponseEntity<StudentDto> update(@PathVariable Long id, @RequestBody Student student) {
