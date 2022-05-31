@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,7 +15,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @NoArgsConstructor
-public class Discipline implements Serializable {
+public class Course implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -30,11 +32,19 @@ public class Discipline implements Serializable {
     @Column(nullable = false)
     private String description;
 
-//    private List<Student> students;
+    @ManyToMany(mappedBy = "courses")
+    @Setter(AccessLevel.NONE)
+    @ToString.Exclude
+    private List<Student> students = new ArrayList<>();
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
 //    private List<Grade> grade;
 
     @Builder
-    public Discipline(@NonNull String name, @NonNull String description) {
+    public Course(@NonNull String name, @NonNull String description) {
         this.name = name;
         this.description = description;
     }
@@ -43,7 +53,7 @@ public class Discipline implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Discipline that = (Discipline) o;
+        Course that = (Course) o;
         return getId().equals(that.getId()) && getName().equals(that.getName());
     }
 

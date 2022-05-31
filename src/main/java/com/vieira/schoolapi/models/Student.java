@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -51,8 +53,13 @@ public class Student implements Serializable {
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
-//
-//    private List<Discipline> disciplines;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "TB_STUDENT_COURSE",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @Setter(AccessLevel.NONE)
+    private List<Course> courses = new ArrayList<>();
 
     @Builder
     public Student(@NonNull String name, @NonNull String email, @NonNull String phone, @NonNull String password) {

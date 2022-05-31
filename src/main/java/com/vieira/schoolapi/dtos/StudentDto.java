@@ -6,6 +6,8 @@ import com.vieira.schoolapi.models.Student;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public record StudentDto(
         Long id,
@@ -16,9 +18,15 @@ public record StudentDto(
         String email,
         @NotBlank(message = "Phone is required")
         @Size(min = 8, max = 20)
-        String phone){
+        String phone,
+        List<CourseDto> courses){
 
     public static StudentDto convert(Student student) {
-        return new StudentDto(student.getId(), student.getName(), student.getEmail(), student.getPhone());
+        return new StudentDto(
+                student.getId(),
+                student.getName(),
+                student.getEmail(),
+                student.getPhone(),
+                student.getCourses().stream().map(CourseDto::convert).collect(Collectors.toList()));
     }
 }

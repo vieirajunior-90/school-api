@@ -1,11 +1,11 @@
 package com.vieira.schoolapi.dtos;
 
-import com.vieira.schoolapi.models.Discipline;
+import com.vieira.schoolapi.models.Course;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
-public record DisciplineDto(
+public record CourseDto(
 
         Long id,
 
@@ -17,8 +17,8 @@ public record DisciplineDto(
 
 ) implements Serializable {
 
-        public static DisciplineDto convert(Discipline discipline) {
-                return new DisciplineDto(
+        public static CourseDto convert(Course discipline) {
+                return new CourseDto(
                         discipline.getId(),
                         discipline.getName(),
                         discipline.getDescription()

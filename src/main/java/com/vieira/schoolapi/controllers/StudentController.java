@@ -1,5 +1,6 @@
 package com.vieira.schoolapi.controllers;
 
+import com.vieira.schoolapi.dtos.CourseDto;
 import com.vieira.schoolapi.dtos.StudentDto;
 import com.vieira.schoolapi.models.Student;
 import com.vieira.schoolapi.services.StudentService;
@@ -19,6 +20,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -37,7 +39,8 @@ public class StudentController {
                     student.getId(),
                     student.getName(),
                     student.getEmail(),
-                    student.getPhone()
+                    student.getPhone(),
+                    student.getCourses().stream().map(CourseDto::convert).collect(Collectors.toList())
             );
         Student studentToSave = new Student();
         BeanUtils.copyProperties(studentDto, studentToSave);
